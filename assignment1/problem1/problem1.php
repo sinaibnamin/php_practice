@@ -15,11 +15,11 @@ function findmin($nums)
 };
 
 
-echo(findmin([3,4,5,6,2,2]));
+echo findmin([3,4,5,6,2,2]);
 echo "\n";
-echo(findmin([10,-12,34,12,-3,123]));
+echo findmin([10,-12,34,12,-3,123]);
 echo "\n";
-echo(findmin([-10]));
+echo findmin([-10]);
 echo "\n";
-echo (findmin([]));
+echo findmin([]);
 
