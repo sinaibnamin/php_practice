@@ -1,6 +1,5 @@
 <?php
 
-
 function make_piramid($input_num){
 
     if($input_num == 0){
