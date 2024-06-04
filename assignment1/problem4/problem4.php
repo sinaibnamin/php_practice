@@ -1,20 +1,29 @@
 <?php
 
 
-$line = '';
-$space = '';
-$star = "*";
-$input_num = 6;
+function make_piramid($input_num){
 
-for($i = 1; $i <= $input_num; $i++){
-    $num_of_space = $input_num-$i;
-    for($j = 1; $j <= $num_of_space; $j++){
-        $space = $space." ";
+    if($input_num == 0){
+        return "null";
     }
-    $line = $space.$star.$space;
-    echo $line;
-    $space = '';
+  
+    $piramid = '';
     $line = '';
-    $star = $star."**";
-    echo "\n";
+    $space = '';
+    $star = "*";
+    
+    for($i = 1; $i <= $input_num; $i++){
+        $num_of_space = $input_num-$i;
+        for($j = 1; $j <= $num_of_space; $j++){
+            $space = $space." ";
+        }
+        $line = $space.$star.$space;
+        $piramid = $piramid.$line."\n";
+        $space = '';
+        $star = $star."**";
+    }
+
+    return $piramid;
 }
+
+echo make_piramid(6);
