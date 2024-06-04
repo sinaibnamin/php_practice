@@ -1,7 +1,5 @@
 <?php
 
-
-
    function findmin($string)
       {
          $string = trim($string);
