@@ -26,3 +26,4 @@ function make_piramid($input_num){
 }
 
 echo make_piramid(6);
+echo "\n";

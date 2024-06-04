@@ -2,8 +2,8 @@
 
    function findmin($string)
       {
-         $string = trim($string);
-         if(!$string){
+        
+         if($string == ""){
             return 'null';
          }
 
@@ -23,9 +23,14 @@
       };
 
 
-echo findmin('5 6 1 3');
+echo findmin('5 6 1 -3');
 echo "\n";
 echo findmin('55 6 2 3');
 echo "\n";
 echo findmin('5 6 -11 3');
 echo "\n";
+echo findmin('0');
+echo "\n";
+echo findmin('');
+echo "\n";
+

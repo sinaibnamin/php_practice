@@ -1,17 +1,18 @@
 <?php
 
 
-function reverse_number($num){
+function sum_of_digits($num){
   
-    $rev_num = 0;
+    $sum = 0;
     
     while($num > 0){
         $rem = $num % 10;
-        $rev_num = ($rev_num * 10) + $rem;
+        $sum = $sum + $rem;
         $num = ($num - $rem) / 10;
     }
     
-    return $rev_num;
+    return $sum;
 }
 
-echo reverse_number(56);
+echo sum_of_digits(5600);
+echo "\n";

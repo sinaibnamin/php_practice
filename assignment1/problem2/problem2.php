@@ -18,3 +18,4 @@ function wordcount(){
 
 
 echo wordcount();
+echo "\n";
