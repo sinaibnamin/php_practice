@@ -25,8 +25,6 @@ function reverse_word($sentence){
 
 echo reverse_word('I love programming');
 echo "<br>";
-echo reverse_word("I lov'e, programming.");
-echo "<br>";
 echo reverse_word('I');
 echo "<br>";
 echo reverse_word(' ');

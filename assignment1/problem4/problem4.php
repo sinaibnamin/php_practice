@@ -1,5 +1,7 @@
 <?php
 
+// i use "-" insted of space, for better visibility when run in browser
+
 function make_piramid($input_num){
 
     if($input_num == 0){
@@ -14,10 +16,10 @@ function make_piramid($input_num){
     for($i = 1; $i <= $input_num; $i++){
         $num_of_space = $input_num-$i;
         for($j = 1; $j <= $num_of_space; $j++){
-            $space = $space." ";
+            $space = $space."_";
         }
         $line = $space.$star.$space;
-        $piramid = $piramid.$line."\n";
+        $piramid = $piramid.$line."<br>";
         $space = '';
         $star = $star."**";
     }
@@ -25,5 +27,5 @@ function make_piramid($input_num){
     return $piramid;
 }
 
-echo make_piramid(6);
-echo "\n";
+echo make_piramid(5);
+echo "<br>";

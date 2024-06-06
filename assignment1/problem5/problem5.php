@@ -14,5 +14,5 @@ function sum_of_digits($num){
     return $sum;
 }
 
-echo sum_of_digits(5600);
+echo sum_of_digits(623004300);
 echo "\n";

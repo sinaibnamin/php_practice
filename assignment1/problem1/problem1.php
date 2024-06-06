@@ -22,9 +22,9 @@
       };
 
 
-echo findmin('5 6 1 -3');
+echo findmin('10 12 15 189 22 2 34');
 echo "<br>";
-echo findmin('55 6 2 3');
+echo findmin('10 -12 34 12 -3 123');
 echo "<br>";
 echo findmin('5 6 -11 3');
 echo "<br>";
