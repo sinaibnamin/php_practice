@@ -3,7 +3,7 @@
 
 function reverse_word($sentence){
 
-    if(empty($sentence)){
+    if(empty(trim($sentence))){
         return 'null';
     }
  
@@ -24,13 +24,13 @@ function reverse_word($sentence){
 }
 
 echo reverse_word('I love programming');
-echo "\n";
-echo reverse_word('I love, programming.');
-echo "\n";
+echo "<br>";
+echo reverse_word("I lov'e, programming.");
+echo "<br>";
 echo reverse_word('I');
-echo "\n";
-echo reverse_word('');
-echo "\n";
+echo "<br>";
+echo reverse_word(' ');
+echo "<br>";
 
 
 

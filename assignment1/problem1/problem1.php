@@ -2,11 +2,10 @@
 
    function findmin($string)
       {
-        
-         if($string == ""){
-            return 'null';
-         }
-
+         if (!preg_match('/^(?=.*[0-9])[0-9 -]+$/', $string)) {
+            return "The string contains wrong value";
+         } 
+      
          $nums = (explode(" ",$string));
 
          if (count($nums) === 0) {
@@ -24,13 +23,17 @@
 
 
 echo findmin('5 6 1 -3');
-echo "\n";
+echo "<br>";
 echo findmin('55 6 2 3');
-echo "\n";
+echo "<br>";
 echo findmin('5 6 -11 3');
-echo "\n";
+echo "<br>";
 echo findmin('0');
-echo "\n";
+echo "<br>";
+echo findmin(' ');
+echo "<br>";
 echo findmin('');
-echo "\n";
+echo "<br>";
+echo findmin('hello 56 78');
+echo "<br>";
 
