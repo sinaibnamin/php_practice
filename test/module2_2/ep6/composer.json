@@ -1,0 +1,17 @@
+{
+    "name": "sinaibnamin/ep6",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "SIna Ibn Amin",
+            "email": "39765231+sinaibnamin@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "symfony/console": "^6.4"
+    }
+}
