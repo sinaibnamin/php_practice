@@ -1,0 +1,12 @@
+[
+    {
+        "amount": 20.5,
+        "category": "salary",
+        "type": "income"
+    },
+    {
+        "amount": 30,
+        "category": "freelancing",
+        "type": "income"
+    }
+]
