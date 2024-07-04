@@ -1,46 +1,53 @@
 <?php
-
 session_start();
-if (isset($_SESSION['user_id'])) {
-    header('Location: dashboard.php');
-    exit();
-}
 
-
-
+// Include database connection and other utilities
 include 'utils.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+$errors = []; // Array to store errors
 
-   
-    $db = new SQLite3('data/users.db');
-    
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Retrieve form data
     $username = $_POST['username'];
     $email = $_POST['email'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    
+
     // Check if password and confirm password match
     if ($_POST['password'] !== $_POST['confirm_password']) {
-        echo "Passwords do not match.";
+        $errors[] = "Passwords do not match.";
+    }
+
+    // Check if username already exists
+    $db = new SQLite3('data/users.db');
+    $stmt = $db->prepare("SELECT username FROM users WHERE username = ?");
+    $stmt->bindValue(1, $username, SQLITE3_TEXT);
+    $result = $stmt->execute();
+
+    if ($result->fetchArray(SQLITE3_ASSOC)) {
+        $errors[] = "Username already exists. Please choose a different username.";
+    }
+
+    // If there are no errors, proceed with registration
+    if (empty($errors)) {
+        $stmt = $db->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+        $stmt->bindValue(1, $username, SQLITE3_TEXT);
+        $stmt->bindValue(2, $email, SQLITE3_TEXT);
+        $stmt->bindValue(3, $password, SQLITE3_TEXT);
+        $stmt->execute();
+
+        // Close the database connection
+        $db->close();
+
+        // Redirect to the login page
+        header('Location: login.php');
         exit();
     }
 
-    // Prepare and execute the SQL statement
-    $stmt = $db->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-    $stmt->bindValue(1, $username, SQLITE3_TEXT);
-    $stmt->bindValue(2, $email, SQLITE3_TEXT);
-    $stmt->bindValue(3, $password, SQLITE3_TEXT);
-    $stmt->execute();
-    
     // Close the database connection
     $db->close();
-    
-    // Redirect to the login page
-    header('Location: login.php');
-    exit();
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -83,7 +90,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div class="mx-auto w-full max-w-xl text-center px-24">
                         <h1 class="block text-center font-bold text-2xl bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 inline-block text-transparent bg-clip-text">TruthWhisper</h1>
                     </div>
-
+                    <?php if (!empty($errors)): ?>
+                        <div class="text-red-500">
+                            <?php foreach ($errors as $error): ?>
+                                <p><?php echo htmlspecialchars($error); ?></p>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="mt-10 mx-auto w-full max-w-xl">
                         <form class="space-y-6" action="register.php" method="POST">
                             <div>
