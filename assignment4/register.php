@@ -1,20 +1,18 @@
 <?php 
-
 require 'db_init.php';
 require 'vendor/autoload.php';
-use App\Model\Customer;
+use App\Controller\CustomerController;
 
-$customer = new Customer($db);
+$customer = new CustomerController($db);
+
+$customer->checkLogout();
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   try {
     $name = $_POST['name'];
     $email =  $_POST['email'];
     $password = $_POST['password'];
-    if ($customer->create($name, $email, $password)) {
-        echo "customer created successfully.";
-    } else {
-        echo "Failed to create customer.";
-    }
+    $customer->create($name, $email, $password);
   } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
   }
@@ -63,8 +61,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </h2>
       </div>
 
+   
+
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
         <div class="px-6 py-12 bg-white shadow sm:rounded-lg sm:px-12">
+       
+          <?php if ($flash = $customer->getFlashMsg()): ?>
+              <div class="flash-container mb-4">
+                  <?php echo $flash; ?>
+              </div>
+          <?php endif; ?>
+
+            
+     
           <form
             class="space-y-6"
             action="./register.php"

@@ -1,3 +1,25 @@
+<?php 
+require 'db_init.php';
+require 'vendor/autoload.php';
+use App\Controller\CustomerController;
+
+$customer = new CustomerController($db);
+
+$customer->checkLogout();
+
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  try {
+    $email =  $_POST['email'];
+    $password = $_POST['password'];
+    $customer->login($email, $password);
+  } catch (PDOException $e) {
+    echo "Error: " . $e->getMessage();
+  }
+}
+
+
+?>
 <!DOCTYPE html>
 <html
   class="h-full bg-white"
@@ -41,9 +63,16 @@
 
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
         <div class="px-6 py-12 bg-white shadow sm:rounded-lg sm:px-12">
+      
+        <?php if ($flash = $customer->getFlashMsg()): ?>
+              <div class="flash-container mb-4">
+                  <?php echo $flash; ?>
+              </div>
+          <?php endif; ?>
+
           <form
             class="space-y-6"
-            action="#"
+              action="./login.php"
             method="POST">
             <div>
               <label
