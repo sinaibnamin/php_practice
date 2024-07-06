@@ -5,6 +5,7 @@ class BaseController {
     protected $db;
 
     public function __construct($db) {
+        date_default_timezone_set('Asia/Dhaka');
         $this->db = $db;
     }
 

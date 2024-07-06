@@ -3,7 +3,6 @@ $page_title = 'Deposit Page';
 $current_page = "deposit";
 include 'header.php';
 
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   try {
     $amount =  $_POST['amount'];
