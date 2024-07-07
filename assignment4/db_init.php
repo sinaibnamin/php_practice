@@ -19,7 +19,8 @@ $db = new SQLite3($dbFile);
 
 $db->exec("CREATE TABLE IF NOT EXISTS customers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
+    first_name TEXT NOT NULL,
+    last_name TEXT NOT NULL,
     email TEXT NOT NULL,
     password TEXT NOT NULL
 )");
@@ -36,8 +37,6 @@ $db->exec("CREATE TABLE IF NOT EXISTS transactions (
     type TEXT NOT NULL,
     from_account_email TEXT NOT NULL,
     to_account_email TEXT,
-    from_account_name TEXT NOT NULL,
-    to_account_name TEXT,
     amount REAL NOT NULL,
     timestamp DATETIME NOT NULL
 )");

@@ -1,31 +1,20 @@
 <?php
-$page_title = 'Dashboard Page';
-$current_page = "dashboard";
+$customer_query_email = $_GET['customer_email'];
+$page_title = 'Customer Transaction Page';
+$current_page = "transaction";
 include 'header.php';
 
-?>
-  <!-- Current Balance Stat -->
-  <dl
-    class="mx-auto grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4">
-    <div
-      class="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8">
-      <dt class="text-sm font-medium leading-6 text-gray-500">
-        Current Balance
-      </dt>
-      <dd
-        class="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
-        $<?= $customer->currentBalance(); ?>
-      </dd>
-    </div>
-  </dl>
+use App\Controller\CustomerController;
+$customer = new CustomerController($db);
 
+
+?>
   <!-- List of All The Transactions -->
   <div class="px-4 sm:px-6 lg:px-8">
     <div class="sm:flex sm:items-center">
       <div class="sm:flex-auto">
         <p class="mt-2 text-sm text-gray-700">
-          Here's a list of all your transactions which inlcuded
-          receiver's name, email, amount and date.
+          List of transactions made by <b class="text-emerald-600"><?= $customer_query_email ?></b> .
         </p>
       </div>
     </div>
@@ -68,7 +57,7 @@ include 'header.php';
             $green_class = "text-emerald-600";
             ?>
             <tbody class="divide-y divide-gray-200 bg-white">
-              <?php foreach($customer->customerAllTransaction() as $transaction): ?>
+              <?php foreach($customer->customerAllTransaction($customer_query_email) as $transaction): ?>
               <tr>
                 <td
                   class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-0 <?= $transaction['color'] == 'red' ? $red_class : $green_class; ?>">
@@ -93,7 +82,7 @@ include 'header.php';
               </tr>
               <?php endforeach; ?>
 
-              <?php if(count($customer->customerAllTransaction()) == 0): ?>
+              <?php if(count($customer->customerAllTransaction($customer_query_email)) == 0): ?>
                 <tr >
                 <td colspan="5"
                   class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-center <?= $red_class ?>">
@@ -109,7 +98,6 @@ include 'header.php';
       </div>
     </div>
   </div>
-
 <?php 
 include 'footer.php'; 
 ?>

@@ -6,7 +6,7 @@ use App\Controller\BaseController;
 class CustomerController extends BaseController{
         
     // Create
-    public function create($name, $email, $password) {
+    public function create($first_name, $last_name, $email, $password) {
    
         // Check if email already exists
         $stmt = $this->db->prepare("SELECT email FROM customers WHERE email = :email");
@@ -22,8 +22,9 @@ class CustomerController extends BaseController{
 
             // If email doesn't exist, proceed with registration
             $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $this->db->prepare("INSERT INTO customers (name, email, password) VALUES (:name, :email, :password)");
-            $stmt->bindParam(':name', $name);
+            $stmt = $this->db->prepare("INSERT INTO customers (first_name, last_name, email, password) VALUES (:first_name, :last_name, :email, :password)");
+            $stmt->bindParam(':first_name', $first_name);
+            $stmt->bindParam(':last_name', $last_name);
             $stmt->bindParam(':email', $email);
             $stmt->bindParam(':password', $passwordHash);
             $result = $stmt->execute();
@@ -35,8 +36,9 @@ class CustomerController extends BaseController{
             
             // Success message and redirect
             $this->createFlashMsg('success', 'Registration successful. You can now sign in.');
-            header('Location: login.php');
-            exit;
+            // header('Location: login.php');
+            // exit;
+            return;
 
       
     }
@@ -51,7 +53,8 @@ class CustomerController extends BaseController{
         $customer = $result->fetchArray(SQLITE3_ASSOC);
 
         if ($customer && password_verify($password, $customer['password'])) {
-            $_SESSION['customer_name'] = $customer['name'];
+            $_SESSION['customer_first_name'] = $customer['first_name'];
+            $_SESSION['customer_last_name'] = $customer['last_name'];
             $_SESSION['customer_email'] = $customer['email'];
             header('Location: /customer/dashboard.php');
             exit(); 
@@ -62,7 +65,7 @@ class CustomerController extends BaseController{
     }
     // check Login
     public function checkLogin() {
-        if (!isset($_SESSION['customer_email']) && !isset($_SESSION['customer_name'])) {
+        if (!isset($_SESSION['customer_email'])) {
             $this->createFlashMsg('danger', 'please login first');
             header('Location: /login.php');
             exit; 
@@ -71,7 +74,7 @@ class CustomerController extends BaseController{
     }
     // check Logout
     public function checkLogout() {
-        if (isset($_SESSION['customer_email']) && isset($_SESSION['customer_name'])) {
+        if (isset($_SESSION['customer_email'])) {
             header('Location: /customer/dashboard.php');
             exit();
         }
@@ -81,7 +84,8 @@ class CustomerController extends BaseController{
     public function get_customer_session_info() {
         $customer_session_info = [
             'email' => $_SESSION['customer_email'],
-            'name' => $_SESSION['customer_name']
+            'first_name' => $_SESSION['customer_first_name'],
+            'last_name' => $_SESSION['customer_last_name']
         ]; 
         return $customer_session_info;
     }
@@ -92,16 +96,13 @@ class CustomerController extends BaseController{
     public function deposit($amount) {
         // get customer info 
         $customer_email = $_SESSION['customer_email'];
-        $customer_name = $_SESSION['customer_name'];
         $currentTimestamp = date('Y-m-d H:i:s');
         $type = 'deposit';
         
-        $stmt = $this->db->prepare("INSERT INTO transactions (type, from_account_email, from_account_name , amount, timestamp) VALUES (:type, :from_account_email, :from_account_name, :amount, :timestamp)");
+        $stmt = $this->db->prepare("INSERT INTO transactions (type, from_account_email, amount, timestamp) VALUES (:type, :from_account_email, :amount, :timestamp)");
 
         $stmt->bindParam(':type', $type);
         $stmt->bindParam(':from_account_email', $customer_email);
-        $stmt->bindParam(':from_account_name', $customer_name);
-
         $stmt->bindParam(':amount', $amount);
         $stmt->bindParam(':timestamp', $currentTimestamp);
         $stmt->execute();
@@ -114,7 +115,6 @@ class CustomerController extends BaseController{
     public function withdraw($amount) {
         // get customer info 
         $customer_email = $_SESSION['customer_email'];
-        $customer_name = $_SESSION['customer_name'];
         $currentTimestamp = date('Y-m-d H:i:s');
         $type = 'withdraw';
 
@@ -125,11 +125,10 @@ class CustomerController extends BaseController{
         }
 
         
-        $stmt = $this->db->prepare("INSERT INTO transactions (type, from_account_email, from_account_name, to_account_email, to_account_name, amount, timestamp) VALUES (:type, :from_account_email, :from_account_name, :to_account_email, :to_account_name, :amount, :timestamp)");
+        $stmt = $this->db->prepare("INSERT INTO transactions (type, from_account_email, to_account_email, amount, timestamp) VALUES (:type, :from_account_email, :to_account_email, :amount, :timestamp)");
 
         $stmt->bindParam(':type', $type);
         $stmt->bindParam(':from_account_email', $customer_email);
-        $stmt->bindParam(':from_account_name', $customer_name);
         $stmt->bindParam(':amount', $amount);
         $stmt->bindParam(':timestamp', $currentTimestamp);
         $stmt->execute();
@@ -143,7 +142,6 @@ class CustomerController extends BaseController{
     public function transfer($amount, $email) {
 
         $to_account_email = '';
-        $to_account_name = '';
 
         // check if email exist in database 
         $stmt = $this->db->prepare("SELECT * FROM customers WHERE email = :email");
@@ -155,7 +153,6 @@ class CustomerController extends BaseController{
             return;
         }
         $to_account_email = $row['email'];
-        $to_account_name = $row['name'];
 
         // check if he transfer his own email
         if($to_account_email == $_SESSION['customer_email']){
@@ -171,17 +168,14 @@ class CustomerController extends BaseController{
 
         // get customer info 
         $customer_email = $_SESSION['customer_email'];
-        $customer_name = $_SESSION['customer_name'];
         $currentTimestamp = date('Y-m-d H:i:s');
         $type = 'transfer';
 
-        $stmt = $this->db->prepare("INSERT INTO transactions (type, from_account_email, from_account_name, to_account_email, to_account_name, amount, timestamp) VALUES (:type, :from_account_email, :from_account_name, :to_account_email, :to_account_name, :amount, :timestamp)");
+        $stmt = $this->db->prepare("INSERT INTO transactions (type, from_account_email,  to_account_email, amount, timestamp) VALUES (:type, :from_account_email, :to_account_email, :amount, :timestamp)");
 
         $stmt->bindParam(':type', $type);
         $stmt->bindParam(':from_account_email', $customer_email);
-        $stmt->bindParam(':from_account_name', $customer_name);
         $stmt->bindParam(':to_account_email', $to_account_email);
-        $stmt->bindParam(':to_account_name', $to_account_name);
         $stmt->bindParam(':amount', $amount);
         $stmt->bindParam(':timestamp', $currentTimestamp);
         $stmt->execute();
@@ -214,8 +208,12 @@ class CustomerController extends BaseController{
         }
         return $balance; 
     }
-    public function customerAllTransaction() {
-        $customer_email = $_SESSION['customer_email'];
+    public function customerAllTransaction($query_email = '') {
+        if ($query_email !== '') {
+            $customer_email = $query_email;
+          } else {
+            $customer_email = $_SESSION['customer_email'];
+          }
         $stmt = $this->db->prepare("SELECT * FROM transactions WHERE (from_account_email = :from_account_email OR to_account_email = :to_account_email)");
         $stmt->bindValue(':from_account_email', $customer_email, SQLITE3_TEXT);
         $stmt->bindValue(':to_account_email', $customer_email, SQLITE3_TEXT);

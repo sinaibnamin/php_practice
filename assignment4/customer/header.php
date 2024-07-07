@@ -98,6 +98,11 @@ $customer_session_info = $customer->get_customer_session_info();
                       $header_menu_active_class : $header_menu_inactive_class; ?>"
                       >Transfer</a
                     >
+                    <a
+                      href="/"
+                      class="<?= $header_menu_inactive_class; ?>"
+                      >Main Page</a
+                    >
                   </div>
                 </div>
               </div>
@@ -122,7 +127,7 @@ $customer_session_info = $customer->get_customer_session_info();
                       <span
                         class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100">
                         <span class="font-medium leading-none text-emerald-700"
-                          >AS</span
+                          ><?= createTwoLetter($customer_session_info['first_name'], $customer_session_info['last_name']) ?></span
                         >
                       </span>
                     </button>
@@ -276,7 +281,7 @@ $customer_session_info = $customer->get_customer_session_info();
         <header class="py-10">
           <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <h1 class="text-3xl font-bold tracking-tight text-white">
-              Howdy, <?=  $customer_session_info['name'] ?> 👋
+              Howdy, <?=  $customer_session_info['first_name'] . " " . $customer_session_info['last_name'] ?> 👋
             </h1>
           </div>
         </header>

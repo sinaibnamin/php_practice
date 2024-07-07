@@ -9,10 +9,11 @@ $customer->checkLogout();
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   try {
-    $name = $_POST['name'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
     $email =  $_POST['email'];
     $password = $_POST['password'];
-    $customer->create($name, $email, $password);
+    $customer->create($first_name, $last_name, $email, $password);
   } catch (PDOException $e) {
     echo "Error: " . $e->getMessage();
   }
@@ -82,12 +83,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
               <label
                 for="name"
                 class="block text-sm font-medium leading-6 text-gray-900"
-                >Name</label
+                >First name</label
               >
               <div class="mt-2">
                 <input
                   id="name"
-                  name="name"
+                  name="first_name"
+                  type="text"
+                  required
+                  class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 p-2" />
+              </div>
+            </div>
+            <div>
+              <label
+                for="last_name"
+                class="block text-sm font-medium leading-6 text-gray-900"
+                >Last name</label
+              >
+              <div class="mt-2">
+                <input
+                  id="last_name"
+                  name="last_name"
                   type="text"
                   required
                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-emerald-600 sm:text-sm sm:leading-6 p-2" />
