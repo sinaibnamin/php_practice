@@ -1,4 +1,11 @@
 <?php
+$customer_query_email = '';
+if(isset($_GET['customer_email'])){
+  $customer_query_email = $_GET['customer_email'];
+}
+
+
+
 $page_title = 'Customers Page';
 $current_page = "customer";
 include 'header.php';
@@ -23,14 +30,35 @@ include 'header.php';
       </div>
     </div>
 
+
+
+
+<form action="/admin/customers.php" method="get" class="flex items-center py-5">
+  <input type="text" name="customer_email" id="customer_email" class="mr-2 w-1/4 px-3 py-2 text-gray-700 border border-blue-500 rounded-md focus:outline-none focus:ring-1 focus:ring-sky-500" placeholder="enter email"
+  value="<?= $customer_query_email ?>"
+  >
+  <button type="submit" class="inline-flex items-center px-4 py-2 bg-sky-600 text-white rounded-md hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sky-500">
+    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"></path></svg>
+    <span class="ml-2">Search</span>
+  </button>
+</form>
+
+
+
+
+
+
+
+
+
     <!-- Users List -->
     <div class="flow-root mt-8">
       <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <ul
           role="list"
-          class="divide-y divide-gray-100">
+          class="divide-y divide-gray-100">          
         
-          <?php foreach($admin->getAllCustomer() as $customer): ?>
+          <?php foreach($admin->getAllCustomer($customer_query_email) as $customer): ?>
           <li
             class="relative flex justify-between px-4 py-5 gap-x-6 hover:bg-gray-50 sm:px-6 lg:px-8">
             <div class="flex gap-x-4">

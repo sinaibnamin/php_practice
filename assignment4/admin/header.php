@@ -4,7 +4,9 @@ require '../vendor/autoload.php';
 
 use App\Controller\AdminController;
 $admin = new AdminController($db);
-// $customer->checkLogin();
+$admin->checkLogin();
+
+$admin_session_info = $admin->get_admin_session_info();
 
 ?>
 <!DOCTYPE html>
@@ -94,7 +96,7 @@ $admin = new AdminController($db);
                     <button
                       @click="open = !open"
                       type="button"
-                      class="flex rounded-full bg-white text-sm focus:outline-none hidden"
+                      class="flex rounded-full bg-white text-sm focus:outline-none"
                       id="user-menu-button"
                       aria-expanded="false"
                       aria-haspopup="true">
@@ -106,7 +108,7 @@ $admin = new AdminController($db);
                       <span
                         class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-sky-100">
                         <span class="font-medium leading-none text-sky-700"
-                          >AS</span
+                          >AD</span
                         >
                       </span>
                     </button>
@@ -122,7 +124,7 @@ $admin = new AdminController($db);
                     aria-labelledby="user-menu-button"
                     tabindex="-1">
                     <a
-                      href="#"
+                      href="/admin/logout.php"
                       class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       role="menuitem"
                       tabindex="-1"

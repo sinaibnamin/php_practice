@@ -55,9 +55,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <body class="h-full bg-slate-100">
     <div class="flex flex-col justify-center min-h-full py-12 sm:px-6 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-md">
+      <div class="flex justify-center">
+        <a href="/" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7 2 2z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m6 0v5a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2v-5m0 0v6a2 2 0 0 1 2 2h6a2 2 0 0 1 2-2v-6z"></path></svg>
+          <span class="ml-2">Go to Homepage</span>
+        </a>
+      </div>
         <h2
           class="mt-6 text-2xl font-bold leading-9 tracking-tight text-center text-gray-900">
-          Sign In To Your Account
+          Customer Login
         </h2>
       </div>
 

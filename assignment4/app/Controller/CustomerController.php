@@ -1,10 +1,9 @@
 <?php
 namespace App\Controller;
-
 use App\Controller\BaseController;
 
 class CustomerController extends BaseController{
-        
+
     // Create
     public function create($first_name, $last_name, $email, $password) {
    
@@ -19,28 +18,25 @@ class CustomerController extends BaseController{
             return;
         }
             
+        // If email doesn't exist, proceed with registration
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        $stmt = $this->db->prepare("INSERT INTO customers (first_name, last_name, email, password) VALUES (:first_name, :last_name, :email, :password)");
+        $stmt->bindParam(':first_name', $first_name);
+        $stmt->bindParam(':last_name', $last_name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $passwordHash);
+        $result = $stmt->execute();
 
-            // If email doesn't exist, proceed with registration
-            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $this->db->prepare("INSERT INTO customers (first_name, last_name, email, password) VALUES (:first_name, :last_name, :email, :password)");
-            $stmt->bindParam(':first_name', $first_name);
-            $stmt->bindParam(':last_name', $last_name);
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':password', $passwordHash);
-            $result = $stmt->execute();
-
-            if ($result === false) {
-                // Handle INSERT query error
-                throw new Exception("Error inserting customer data");
-            }
-            
-            // Success message and redirect
-            $this->createFlashMsg('success', 'Registration successful. You can now sign in.');
-            // header('Location: login.php');
-            // exit;
-            return;
-
-      
+        if ($result === false) {
+            // Handle INSERT query error
+            throw new Exception("Error inserting customer data");
+        }
+        
+        // Success message and redirect
+        $this->createFlashMsg('success', 'Registration successful. You can now sign in.');
+        // header('Location: login.php');
+        // exit;
+        return;
     }
 
 
@@ -108,7 +104,6 @@ class CustomerController extends BaseController{
         $stmt->execute();
         $this->createFlashMsg('success', 'amount deposited successfully');
         return;
-
     }
 
     // Withdraw
@@ -117,7 +112,6 @@ class CustomerController extends BaseController{
         $customer_email = $_SESSION['customer_email'];
         $currentTimestamp = date('Y-m-d H:i:s');
         $type = 'withdraw';
-
         // check available balance 
         if($this->currentBalance() < $amount){
             $this->createFlashMsg('danger', "you have not sufficient balance to withdraw $". $amount );

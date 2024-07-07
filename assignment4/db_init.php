@@ -43,4 +43,22 @@ $db->exec("CREATE TABLE IF NOT EXISTS transactions (
 
 
 
-// $db->close();
+// admin registration
+
+$name = "admin";
+$email = "admin@admin.com";
+$password = password_hash("123", PASSWORD_DEFAULT); // Hash the password for security
+
+// Check if a row with the admin email already exists
+$stmt = $db->prepare("SELECT * FROM admins WHERE email = :email");
+$stmt->bindParam(':email', $email);
+$result = $stmt->execute();
+
+$row = $result->fetchArray(SQLITE3_ASSOC);
+if (!$row) {
+    $stmt = $db->prepare("INSERT INTO admins (name, email, password) VALUES (:name, :email, :password)");
+    $stmt->bindParam(':name', $name);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':password', $password);
+    $result = $stmt->execute();
+}
